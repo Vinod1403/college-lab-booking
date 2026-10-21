@@ -1,0 +1,49 @@
+
+body {
+    background-color: #f7f8fc;
+    color: #212529;
+}
+
+.hero-section {
+    background: #17365d;
+    color: white;
+}
+
+.hero-icon {
+    font-size: 110px;
+}
+
+.feature-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 28px;
+    height: 100%;
+}
+
+.feature-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+}
+
+.equipment-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.equipment-card:hover {
+    transform: translateY(-4px);
+}
+
+.equipment-icon {
+    background: #edf3fa;
+    padding: 24px;
+    text-align: center;
+    font-size: 48px;
+}
+
+footer {
+    border-top: 1px solid #e5e7eb;
+}

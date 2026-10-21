@@ -1,0 +1,9 @@
+@'
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+college_lab.db
+tests/test_college_lab.db
+'@ | Set-Content -Path .\.gitignore

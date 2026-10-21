@@ -1,0 +1,94 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | LabBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Dashboard Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold">Student Dashboard</h1>
+        <p class="text-secondary">
+            Welcome, {{ user.name }}! Manage your laboratory equipment bookings here.
+        </p>
+
+        <span class="badge text-bg-primary">
+            {{ user.role|title }}
+        </span>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="row g-4 mt-2">
+
+        <!-- Equipment Card -->
+        <div class="col-md-6">
+            <div class="feature-card h-100">
+                <h5 class="fw-bold">Explore Equipment</h5>
+
+                <p class="text-secondary">
+                    Browse laboratory equipment, explore categories,
+                    and request equipment for your practical sessions.
+                </p>
+
+                <a href="{{ url_for('equipment') }}"
+                   class="btn btn-primary">
+                    <i class="bi bi-cpu me-1"></i>
+                    View Equipment
+                </a>
+            </div>
+        </div>
+
+        <!-- My Bookings Card -->
+        <div class="col-md-6">
+            <div class="feature-card h-100">
+                <h5 class="fw-bold">My Bookings</h5>
+
+                <p class="text-secondary">
+                    View your booking requests, check their status,
+                    and keep track of your laboratory equipment reservations.
+                </p>
+
+                <a href="{{ url_for('my_bookings') }}"
+                   class="btn btn-outline-primary">
+                    <i class="bi bi-calendar-check me-1"></i>
+                    View My Bookings
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quick Information -->
+    <div class="card border-0 shadow-sm mt-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold">Account Information</h5>
+
+            <p class="mb-2">
+                <strong>Name:</strong> {{ user.name }}
+            </p>
+
+            <p class="mb-2">
+                <strong>Email:</strong> {{ user.email }}
+            </p>
+
+            <p class="mb-0">
+                <strong>Account Role:</strong> {{ user.role|title }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Logout -->
+    <form method="POST"
+          action="{{ url_for('logout') }}"
+          class="mt-4">
+
+        <button type="submit" class="btn btn-outline-danger">
+            <i class="bi bi-box-arrow-right me-1"></i>
+            Logout
+        </button>
+
+    </form>
+
+</div>
+{% endblock %}

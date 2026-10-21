@@ -1,0 +1,97 @@
+
+{% extends "base.html" %}
+
+{% block title %}Equipment | LabBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Laboratory Equipment</h1>
+        <p class="text-secondary">
+            Browse equipment, check availability, and request a booking.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        {% for item in items %}
+        <div class="col-md-6 col-lg-4">
+
+            <div class="card equipment-card h-100">
+
+                <!-- Equipment Icon -->
+                <div class="equipment-icon">
+                    {% if item.category == "Electronics" %}
+                        🔌
+                    {% elif item.category == "Computing" %}
+                        💻
+                    {% elif item.category == "Robotics" %}
+                        🤖
+                    {% elif item.category == "Internet of Things" %}
+                        📡
+                    {% elif item.category == "Manufacturing" %}
+                        🖨️
+                    {% else %}
+                        🔬
+                    {% endif %}
+                </div>
+
+                <!-- Equipment Details -->
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="card-title fw-bold">
+                        {{ item.name }}
+                    </h5>
+
+                    <p class="text-secondary mb-2">
+                        {{ item.category }}
+                    </p>
+
+                    <p>{{ item.description }}</p>
+
+                    <!-- Availability Status -->
+                    {% if item.status == "Available" %}
+                        <span class="badge text-bg-success align-self-start">
+                            Available
+                        </span>
+                    {% else %}
+                        <span class="badge text-bg-secondary align-self-start">
+                            Currently Booked
+                        </span>
+                    {% endif %}
+
+                    <!-- Booking Button -->
+                    <div class="mt-auto pt-3">
+
+                        {% if session.get('user_id') %}
+                            <a
+                                href="{{ url_for('book_equipment', equipment_id=item.id) }}"
+                                class="btn btn-primary w-100">
+                                Book Equipment
+                            </a>
+                        {% else %}
+                            <a
+                                href="{{ url_for('login') }}"
+                                class="btn btn-outline-primary w-100">
+                                Login to Book
+                            </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No laboratory equipment is currently listed.
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}

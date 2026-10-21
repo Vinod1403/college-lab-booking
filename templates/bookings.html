@@ -1,0 +1,54 @@
+
+{% extends "base.html" %}
+
+{% block title %}My Bookings | LabBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="fw-bold">My Bookings</h1>
+    <p class="text-secondary">Track your equipment booking requests.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    {% if bookings %}
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Equipment</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.name }}</td>
+                    <td>{{ booking.booking_date }}</td>
+                    <td>{{ booking.start_time }} - {{ booking.end_time }}</td>
+                    <td>
+                        {% if booking.status == "Approved" %}
+                            <span class="badge text-bg-success">Approved</span>
+                        {% elif booking.status == "Rejected" %}
+                            <span class="badge text-bg-danger">Rejected</span>
+                        {% else %}
+                            <span class="badge text-bg-warning">{{ booking.status }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="alert alert-info mt-4">
+            You haven't made any booking requests yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+
+{% extends "base.html" %}
+
+{% block title %}Home | LabBook{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container py-5">
+        <div class="row align-items-center py-4">
+            <div class="col-lg-8">
+                <span class="badge text-bg-light mb-3">
+                    College Laboratory Portal
+                </span>
+                <h1 class="display-5 fw-bold">
+                    Book Lab Equipment<br>Without the Hassle
+                </h1>
+                <p class="lead mt-3">
+                    Explore laboratory equipment, check availability,
+                    and manage your booking requests in one place.
+                </p>
+                <a href="{{ url_for('equipment') }}"
+                   class="btn btn-light btn-lg mt-3">
+                    Explore Equipment
+                </a>
+            </div>
+            <div class="col-lg-4 text-center mt-4 mt-lg-0">
+                <div class="hero-icon">🔬</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">How It Works</h2>
+        <p class="text-secondary">
+            Three simple steps to access laboratory equipment.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h5>Explore</h5>
+                <p>Browse the available laboratory equipment.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h5>Request a Booking</h5>
+                <p>Select equipment and request a booking slot.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <div class="feature-icon">✅</div>
+                <h5>Get Approval</h5>
+                <p>Track your request and its approval status.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
