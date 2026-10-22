@@ -9,13 +9,15 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies and Test') {
-            steps {
-                bat 'python --version'
-                bat 'python -m pip install -r requirements.txt'
-                bat 'python -m pytest -v'
-            }
-        }
+        
+stage('Install Dependencies and Test') {
+    steps {
+        bat 'py -3.11 --version'
+        bat 'py -3.11 -m pip install -r requirements.txt'
+        bat 'py -3.11 -m pytest -v'
+    }
+}
+
 
         stage('Build Docker Image') {
             steps {
