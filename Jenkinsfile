@@ -2,52 +2,34 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = 'college-lab-booking'
-        IMAGE_TAG = 'ci'
-    }
-
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
-                echo 'Source code checked out successfully.'
             }
         }
 
-        stage('Run Automated Tests') {
+        stage('Install Dependencies and Test') {
             steps {
-                sh '''
-                    docker run --rm \
-                      -v "$WORKSPACE:/app" \
-                      -w /app \
-                      python:3.11-slim \
-                      sh -c "pip install --no-cache-dir -r requirements.txt && pytest -v"
-                '''
+                bat 'python --version'
+                bat 'python -m pip install -r requirements.txt'
+                bat 'python -m pytest -v'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                    docker build \
-                      -t ${IMAGE_NAME}:${IMAGE_TAG} .
-                '''
+                bat 'docker build -t college-lab-booking:ci .'
             }
         }
     }
 
     post {
         success {
-            echo 'SUCCESS: Tests passed and Docker image was built.'
+            echo 'SUCCESS: Tests passed and Docker image built.'
         }
-
         failure {
-            echo 'FAILED: Check the stage logs for the error.'
-        }
-
-        always {
-            echo 'Jenkins pipeline execution completed.'
+            echo 'FAILED: Check the console output for details.'
         }
     }
 }
