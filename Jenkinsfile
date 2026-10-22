@@ -9,34 +9,36 @@ pipeline {
             }
         }
 
-        
-stage('Install Dependencies and Test') {
-    steps {
-        bat 'py -3.11 --version'
-        bat 'py -3.11 -m pip install -r requirements.txt'
-        bat 'py -3.11 -m pytest -v'
-    }
-}
+        stage('Install Dependencies and Test') {
+            steps {
+                bat 'py -3.11 --version'
+                bat 'py -3.11 -m pip install -r requirements.txt'
+                bat 'py -3.11 -m pytest -v'
+            }
+        }
 
-stage('Check Docker Access') {
-    steps {
-        bat '"C:\\Users\\Vinod\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" version'
-    }
-}
+        stage('Check Docker Access') {
+            steps {
+                bat '"C:\\Users\\Vinod\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" version'
+            }
+        }
 
-stage('Build Docker Image') {
-    steps {
-        bat '"C:\\Users\\Vinod\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" build -t college-lab-booking:ci .'
+        stage('Build Docker Image') {
+            steps {
+                bat '"C:\\Users\\Vinod\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" build -t college-lab-booking:ci .'
+            }
+        }
     }
-}
-
 
     post {
         success {
             echo 'SUCCESS: Tests passed and Docker image built.'
         }
         failure {
-            echo 'FAILED: Check the console output for details.'
+            echo 'FAILED: Check the Console Output for details.'
+        }
+        always {
+            echo 'Jenkins pipeline execution completed.'
         }
     }
 }
