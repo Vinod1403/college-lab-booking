@@ -1,11 +1,18 @@
 
+import os
 import sqlite3
 from pathlib import Path
 
-DATABASE = Path(__file__).parent / "college_lab.db"
+DATABASE = Path(
+    os.environ.get(
+        "DATABASE_PATH",
+        str(Path(__file__).parent / "college_lab.db")
+    )
+)
 
 
 def get_db_connection():
+    DATABASE.parent.mkdir(parents=True, exist_ok=True)
     connection = sqlite3.connect(DATABASE)
     connection.row_factory = sqlite3.Row
     return connection
@@ -18,7 +25,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            email TEXT NOT NULL UNIQUE,
+            email TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
             role TEXT NOT NULL DEFAULT 'student'
                 CHECK (role IN ('student', 'admin'))
@@ -27,7 +34,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS equipment (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
-            category TEXT NOT NULL,
+            category TEXT,
             description TEXT,
             is_active INTEGER NOT NULL DEFAULT 1
         );
@@ -46,58 +53,9 @@ def init_db():
                 )),
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id),
-            FOREIGN KEY (equipment_id) REFERENCES equipment(id),
-            CHECK (start_time < end_time)
+            FOREIGN KEY (equipment_id) REFERENCES equipment(id)
         );
     """)
 
-    count = connection.execute(
-        "SELECT COUNT(*) FROM equipment"
-    ).fetchone()[0]
-
-    if count == 0:
-        equipment_items = [
-            (
-                "Arduino Kit",
-                "Electronics",
-                "Development kit for embedded systems."
-            ),
-            (
-                "Raspberry Pi",
-                "Computing",
-                "Compact computer for programming and IoT."
-            ),
-            (
-                "Robotics Kit",
-                "Robotics",
-                "Kit for robotics and automation experiments."
-            ),
-            (
-                "Digital Multimeter",
-                "Electronics",
-                "Device for measuring electrical quantities."
-            ),
-            (
-                "IoT Sensor Kit",
-                "Internet of Things",
-                "Sensors for IoT experiments."
-            ),
-            (
-                "3D Printer",
-                "Manufacturing",
-                "Equipment for prototype manufacturing."
-            )
-        ]
-
-        connection.executemany("""
-            INSERT INTO equipment (name, category, description)
-            VALUES (?, ?, ?)
-        """, equipment_items)
-
     connection.commit()
     connection.close()
-
-
-if __name__ == "__main__":
-    init_db()
-    print(f"Database initialized at: {DATABASE}")
