@@ -1,0 +1,102 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admin Bookings | LabBook{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="fw-bold">Admin Dashboard</h1>
+    <p class="text-secondary">
+        Review and manage student equipment booking requests.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    {% if bookings %}
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Student</th>
+                    <th>Equipment</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>
+                        {{ booking.student_name }}<br>
+                        <small>{{ booking.student_email }}</small>
+                    </td>
+                    <td>{{ booking.equipment_name }}</td>
+                    <td>{{ booking.booking_date }}</td>
+                    <td>
+                        {{ booking.start_time }} - {{ booking.end_time }}
+                    </td>
+                    <td>
+                        {% if booking.status == "Approved" %}
+                            <span class="badge text-bg-success">
+                                Approved
+                            </span>
+                        {% elif booking.status == "Rejected" %}
+                            <span class="badge text-bg-danger">
+                                Rejected
+                            </span>
+                        {% else %}
+                            <span class="badge text-bg-warning">
+                                {{ booking.status }}
+                            </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if booking.status == "Pending" %}
+                            <form method="POST"
+                                  action="{{ url_for(
+                                      'approve_booking',
+                                      booking_id=booking.id
+                                  ) }}"
+                                  class="mb-2">
+                                <button class="btn btn-success btn-sm"
+                                        type="submit">
+                                    Approve
+                                </button>
+                            </form>
+
+                            <form method="POST"
+                                  action="{{ url_for(
+                                      'reject_booking',
+                                      booking_id=booking.id
+                                  ) }}">
+                                <button class="btn btn-danger btn-sm"
+                                        type="submit">
+                                    Reject
+                                </button>
+                            </form>
+                        {% else %}
+                            <span class="text-secondary">
+                                No action available
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <div class="alert alert-info mt-4">
+            No booking requests have been submitted yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
