@@ -17,20 +17,19 @@ stage('Install Dependencies and Test') {
         bat 'py -3.11 -m pytest -v'
     }
 }
+
 stage('Check Docker Access') {
     steps {
-        bat 'whoami'
-        bat 'where.exe docker'
         bat '"C:\\Users\\Vinod\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" version'
     }
 }
 
-        stage('Build Docker Image') {
-            steps {
-                bat 'docker build -t college-lab-booking:ci .'
-            }
-        }
+stage('Build Docker Image') {
+    steps {
+        bat '"C:\\Users\\Vinod\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker.exe" build -t college-lab-booking:ci .'
     }
+}
+
 
     post {
         success {
